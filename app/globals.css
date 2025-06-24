@@ -109,3 +109,15 @@
 .services-slider .splide__pagination__page.is-active {
   @apply scale-100 !bg-[#1355FF];
 }
+
+
+
+.nav-item-hover-wrapper:hover .subnav-title {
+  color: #1355FF;
+  
+}
+
+.nav-item-hover-wrapper:hover .subnav-image,
+.nav-item-hover-wrapper:hover .subnav-bg {
+  transform: scale(1.05);
+}

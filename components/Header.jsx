@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Logo from "../public/pps-logo.svg";
 import callRinging from "../public/call-ringing.svg";
@@ -43,7 +43,8 @@ import AboutusIcon from "../public/About us.svg";
 import IllustrationA from "../public/Illustration-01.png";
 import IllustrationB from "../public/Illustration-02.png";
 import arrowright from "../public/arrow-right.svg";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
+
 const Header = ({ ContactUsBtn }) => {
   const navData = [
     {
@@ -180,15 +181,32 @@ const Header = ({ ContactUsBtn }) => {
   const [openMobNav, setOpenMobNav] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [disableHover, setDisableHover] = useState(false);
   const handleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-    const pathname = usePathname();
+  const pathname = usePathname();
+  useEffect(() => {
+    setOpenMobNav(null);
+    setMenuOpen(false);
+    setDisableHover(true); // disable hover immediately on route change
 
+    const timer = setTimeout(() => {
+      setDisableHover(false); // allow hover again after 300ms
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [pathname]);
   return (
     <>
-      <div className={`bg-black/15 transition-all duration-150 ease-in-out ${hovered ? 'backdrop-blur-sm visible opacity-100' : 'backdrop-blur-none invisible opacity-0'} z-[998] fixed top-0 w-full h-full left-0`}></div>
+      <div
+        className={`hidden xl:block bg-black/15 transition-all duration-150 ease-in-out ${
+          hovered
+            ? "backdrop-blur-sm visible opacity-100"
+            : "backdrop-blur-none invisible opacity-0"
+        } z-[998] fixed top-0 w-full h-full left-0`}
+      ></div>
 
       <div className="w-full sticky top-0 z-[999] bg-white">
         <div className="2xl:max-w-[1440px] 2xl:mx-auto bg-white flex items-center relative p-4 xl:px-0 xl:pt-1 xl:pb-0">
@@ -196,10 +214,11 @@ const Header = ({ ContactUsBtn }) => {
             <Image src={Logo} alt="Logo" className="w-auto h-10" />
           </Link>
           <div
-            className={`bg-white p-4 xl:px-[15px] xl:py-0 absolute top-full h-[calc(100dvh-72px)] left-0 w-full overflow-y-scroll xl:overflow-y-visible xl:h-auto xl:top-0 xl:relative grow flex flex-col justify-between xl:flex-row xl:items-center smooth shadow-md xl:shadow-none ${menuOpen ? "scale-100" : "xl:scale-100 scale-0 z-40"
-              }`}
+            className={`bg-white p-4 xl:px-[15px] xl:py-0 absolute top-full h-[calc(100dvh-72px)] left-0 w-full overflow-y-scroll xl:overflow-y-visible xl:h-auto xl:top-0 xl:relative grow flex flex-col justify-between xl:flex-row xl:items-center smooth shadow-md xl:shadow-none ${
+              menuOpen ? "scale-100" : "xl:scale-100 scale-0 z-40"
+            }`}
           >
-            <Link href={'/'} className="hidden xl:block">
+            <Link href={"/"} className="hidden xl:block">
               <Image src={Logo} alt="Logo" className="w-auto h-12" />
             </Link>
 
@@ -208,7 +227,9 @@ const Header = ({ ContactUsBtn }) => {
                 nav.subnavs.length ? (
                   <div
                     key={nav.id}
-                    className="group w-full xl:w-auto"
+                    className={`${
+                      disableHover ? "" : "group"
+                    } w-full xl:w-auto`}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                   >
@@ -230,15 +251,19 @@ const Header = ({ ContactUsBtn }) => {
                           }`}
                       />
                     </div>
-                    <div className={`absolute ${openMobNav === nav.id
-                      ? 'opacity-100 visible'
-                      : 'opacity-0 invisible'
-                      } top-0 xl:!top-10 left-0 w-full xl:-z-[1] z-10 bg-white p-4 xl:px-12 xl:pb-12 xl:pt-6 transition-all xl:duration-150 ease-in-out xl:invisible xl:opacity-0 xl:group-hover:!top-20 xl:group-hover:opacity-100 xl:group-hover:visible`}>
+                    <div
+                      className={`absolute ${
+                        openMobNav === nav.id
+                          ? "opacity-100 visible"
+                          : "opacity-0 invisible"
+                      } top-0 xl:!top-10 left-0 w-full xl:-z-[1] z-10 bg-white p-4 xl:px-12 xl:pb-12 xl:pt-6 transition-all xl:duration-150 ease-in-out xl:invisible xl:opacity-0 xl:group-hover:!top-20 xl:group-hover:opacity-100 xl:group-hover:visible`}
+                    >
                       <div className="py-2 border-b border-[#7198FE]/10 flex items-center justify-between">
                         <h3 className="font-dmSans text-sm !leading-6 tracking-[1px] text-[#666666] font-bold uppercase">
                           {nav.name}
                         </h3>
-                        <button type="button"
+                        <button
+                          type="button"
                           onClick={() => setOpenMobNav(null)}
                           className="xl:hidden text-xs !leading-6 tracking-[1px] text-[#3355FF] font-bold "
                         >
@@ -251,47 +276,53 @@ const Header = ({ ContactUsBtn }) => {
                             .find((item) => item.id === nav.id)
                             ?.subnavs.map((sub) => (
                               <Link
+                                // onClick={() => {
+                                //   setOpenMobNav(null);
+                                //   setMenuOpen(false);
+                                // }}
                                 key={sub.id}
                                 href={sub.path}
-                                className=" group  relative xl:flex-1  rounded-2xl bg-[linear-gradient(to_bottom,_#1355FF00_0%,_#1355FF1A_100%)] hover:!bg-[linear-gradient(to_top,_#1355FF00_0%,_#1355FF1A_100%)] transition-transform duration-300 ease-in-out overflow-hidden"
                               >
-                                <div
-                                  className={`p-4  flex xl:flex-col gap-3 xl:gap-0 ${nav.name == "Services"
-                                    ? "!mb-0 xl:!mb-[18px]"
-                                    : "!mb-0"
+                                <div className="nav-item-hover-wrapper relative xl:flex-1  rounded-2xl bg-[linear-gradient(to_bottom,_#1355FF00_0%,_#1355FF1A_100%)] hover:!bg-[linear-gradient(to_top,_#1355FF00_0%,_#1355FF1A_100%)] transition-transform duration-300 ease-in-out overflow-hidden">
+                                  <div
+                                    className={`p-4  flex xl:flex-col gap-3 xl:gap-0 ${
+                                      nav.name == "Services"
+                                        ? "!mb-0 xl:!mb-[18px]"
+                                        : "!mb-0"
                                     }  `}
-                                >
-                                  <Image
-                                    src={sub.subIcon}
-                                    alt={sub.name}
-                                    className="w-[28px] h-[28px]"
-                                  />
-                                  <div className="xl:mt-4">
-                                    <h4 className="mb-[2px] font-dmSans text-lg text-[#111B29 group-hover:text-[#1355FF]  font-semibold tracking-[-0.5px] transition-transform duration-300 ease-in-out">
-                                      {sub.name}
-                                    </h4>
-                                    <p className="text-sm xl:text-xs font-normal text-[#677489]">
-                                      {sub.desc}
-                                    </p>
+                                  >
+                                    <Image
+                                      src={sub.subIcon}
+                                      alt={sub.name}
+                                      className="w-[28px] h-[28px]"
+                                    />
+                                    <div className="xl:mt-4">
+                                      <h4 className="subnav-title mb-[2px] font-dmSans text-lg font-semibold tracking-[-0.5px] text-[#111B29] group-subnav-hover:text-[#1355FF] transition-transform duration-300 ease-in-out">
+                                        {sub.name}
+                                      </h4>
+                                      <p className="text-sm xl:text-xs font-normal text-[#677489]">
+                                        {sub.desc}
+                                      </p>
+                                    </div>
                                   </div>
+
+                                  <Image
+                                    src={sub.img}
+                                    alt={sub.name}
+                                    className="subnav-image hidden xl:block w-full relative z-20  transition-transform duration-300 ease-in-out"
+                                  />
+
+                                  <Image
+                                    src={SubNavBg}
+                                    alt="SubNavBg"
+                                    className="subnav-bg hidden xl:block absolute bottom-0 right-0 z-10  transition-transform duration-300 ease-in-out"
+                                  />
+                                  <Image
+                                    src={SubNavSmallBg}
+                                    alt="SubNavBg"
+                                    className="xl:hidden absolute bottom-0 right-0 z-10"
+                                  />
                                 </div>
-
-                                <Image
-                                  src={sub.img}
-                                  alt={sub.name}
-                                  className="hidden xl:block w-full relative z-20 group-hover:scale-105 transition-transform duration-300 ease-in-out"
-                                />
-
-                                <Image
-                                  src={SubNavBg}
-                                  alt="SubNavBg"
-                                  className="hidden xl:block absolute bottom-0 right-0 z-10 group-hover:scale-105 transition-transform duration-300 ease-in-out"
-                                />
-                                <Image
-                                  src={SubNavSmallBg}
-                                  alt="SubNavBg"
-                                  className="xl:hidden absolute bottom-0 right-0 z-10"
-                                />
                               </Link>
                             ))}
                         </div>
@@ -301,12 +332,20 @@ const Header = ({ ContactUsBtn }) => {
                             {navData
                               .find((item) => item.id === nav.id)
                               ?.subnavs.map((sub, index, array) => (
-                                <Link key={sub.id} href={sub.path} className="">
+                                <Link
+                                  // onClick={() => {
+                                  //   setOpenMobNav(null);
+                                  //   setMenuOpen(false);
+                                  // }}
+                                  key={sub.id}
+                                  href={sub.path}
+                                >
                                   <div
-                                    className={`xl:max-w-[326px] flex items-start gap-4 px-[6px] py-2 bg-white hover:bg-[#EBF1FF]/50 smooth rounded-lg ${index === array.length - 1
-                                      ? "mb-0"
-                                      : "mb-5"
-                                      }`}
+                                    className={`xl:max-w-[326px] flex items-start gap-4 px-[6px] py-2 bg-white hover:bg-[#EBF1FF]/50 smooth rounded-lg ${
+                                      index === array.length - 1
+                                        ? "mb-0"
+                                        : "mb-5"
+                                    }`}
                                   >
                                     <Image
                                       src={sub.subIcon}
@@ -378,8 +417,9 @@ const Header = ({ ContactUsBtn }) => {
               )}
             </div>
             <div
-              className={`w-full xl:w-auto flex justify-between items-center ${ContactUsBtn ? "gap-10" : "gap-4 xl:gap-3"
-                } px-0 mt-4 xl:mt-0`}
+              className={`w-full xl:w-auto flex justify-between items-center ${
+                ContactUsBtn ? "gap-10" : "gap-4 xl:gap-3"
+              } px-0 mt-4 xl:mt-0`}
             >
               <div className="mt-0 flex items-center px-0 xl:px-1 gap-3">
                 <button className="h-10 w-10 bg-[#D7E8FF]/50 inline-flex items-center justify-center">
@@ -396,7 +436,7 @@ const Header = ({ ContactUsBtn }) => {
                 </div>
               </div>
 
-              {pathname === '/Request-A-Quote' ?  (
+              {pathname === "/Request-A-Quote" ? (
                 <div className="flex items-center justify-center">
                   <Button
                     variant="custom"
@@ -432,9 +472,15 @@ const Header = ({ ContactUsBtn }) => {
           </Link>
           <button
             onClick={handleMenu}
-            className={`xl:hidden inline-flex items-center justify-center h-10 w-10 bg-[#1355FF] ${menuOpen ? "bg-[#1A1A1A]" : "bg-[#1355FF]"} `}
+            className={`xl:hidden inline-flex items-center justify-center h-10 w-10 bg-[#1355FF] ${
+              menuOpen ? "bg-[#1A1A1A]" : "bg-[#1355FF]"
+            } `}
           >
-            <Image src={menuOpen ? close : menu} className="w-5 h-5" alt="Menu" />
+            <Image
+              src={menuOpen ? close : menu}
+              className="w-5 h-5"
+              alt="Menu"
+            />
           </button>
         </div>
       </div>
