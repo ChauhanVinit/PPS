@@ -8,7 +8,7 @@ import cctvcamera from "../../public/cctv-camera.svg";
 import Image from "next/image";
 // import validation from "../../public/validation.svg";
 // import HomeServicesBanner from "../../public/HomeServicesBanner.png";
-import FeaturesImg from "../../public/Features-img.png";
+import FeaturesBanner from "../../public/FeaturesBanner.png";
 import Tag from "../../utils/Tag";
 import Heading from "../../utils/Heading";
 import Button from "../../utils/Button";
@@ -113,7 +113,7 @@ const Services = () => {
                 <div className="flex flex-col lg:flex-row items-center gap-10 2xl:gap-[60px]">
                   <div>
                     <Image
-                      src={FeaturesImg}
+                      src={FeaturesBanner}
                       alt="HomeServicesBanner"
                       className=" min-w-0  sm:min-w-[428px] w-auto h-[445px]"
                     />
