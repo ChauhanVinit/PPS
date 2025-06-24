@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .smooth {
+    @apply transition-all duration-100 ease-in-out;
+  }
+
+  .invisible-scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .invisible-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  .invisible-scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  .invisible-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* ✅ Raw CSS for scrollbars – no @apply */
+::-webkit-scrollbar {
+  width: 3px;
+  background: #edf5ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1355FF;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-arrow {
+  @apply absolute bottom-0 z-10 inline-flex items-center justify-center h-[50px] w-[50px] border border-[#98A2B3] bg-transparent;
+}
+
+.custom-prev {
+  @apply left-1/2 -translate-x-[calc(50%-106px)] md:right-0 md:left-auto md:translate-x-0;
+}
+
+.custom-next {
+  @apply left-1/2 -translate-x-[calc(50%+106px)] md:right-[66px] md:left-auto md:translate-x-0 rotate-180;
+}
+
+.serv-prev {
+  @apply left-1/2 -translate-x-[calc(50%-106px)] -bottom-[82px] sm:-bottom-[90px] md:right-0 md:left-auto md:translate-x-0 2xl:right-[284px] md:-top-[110px];
+}
+
+.serv-next {
+  @apply left-1/2 -translate-x-[calc(50%+106px)] -bottom-[82px] sm:-bottom-[90px] md:right-[66px] md:left-auto md:translate-x-0 2xl:right-[350px] md:-top-[110px] rotate-180;
+}
+
+.custom-arrow svg {
+  width: 12px;
+  height: 15px;
+  stroke: #374049;
+  fill: #374049;
+}
+
+.slider-prev {
+  @apply left-1/2 -translate-x-[calc(50%-106px)] -bottom-[82px] lg:-bottom-[90px] lg:right-0 lg:left-auto lg:translate-x-0 2xl:right-[284px] lg:-top-[110px];
+}
+
+.slider-next {
+  @apply left-1/2 -translate-x-[calc(50%+106px)] -bottom-[82px] lg:-bottom-[90px] lg:right-[66px] lg:left-auto lg:translate-x-0 2xl:right-[350px] lg:-top-[110px] rotate-180;
+}
+
+
+/*pagination styles for all sliders */
+.testimonial-slider .splide__pagination,
+.QuickView-slider .splide__pagination,
+.industries-slider .splide__pagination,
+.services-slider .splide__pagination {
+  @apply absolute right-0 p-0 min-w-[300px] justify-center items-center gap-4 flex;
+}
+
+.testimonial-slider .splide__pagination {
+  @apply bottom-[18px] mt-20;
+}
+
+.QuickView-slider .splide__pagination,
+.industries-slider .splide__pagination,
+.services-slider .splide__pagination {
+  @apply -bottom-16 sm:-bottom-[72px] mt-[60px];
+}
+
+/* Shared dot styles */
+.testimonial-slider .splide__pagination__page,
+.QuickView-slider .splide__pagination__page,
+.industries-slider .splide__pagination__page,
+.services-slider .splide__pagination__page {
+  @apply !bg-[#88C0FF] w-2 h-2 shadow-none outline-none;
+}
+
+/* Shared active dot styles */
+.testimonial-slider .splide__pagination__page.is-active,
+.QuickView-slider .splide__pagination__page.is-active,
+.industries-slider .splide__pagination__page.is-active,
+.services-slider .splide__pagination__page.is-active {
+  @apply scale-100 !bg-[#1355FF];
+}
