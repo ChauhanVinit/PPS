@@ -55,9 +55,9 @@ const Services = () => {
      {
       label: "CCTV Installation",
       icon: cctvcamera,
-      title: "Trusted CCTV Installation Services",
+      title: "Advanced CCTV Installation Services",
       description:
-        "Our CCTV Installation Services provide dependable, 24/7 surveillance to safeguard your property. Ideal for commercial, residential, and industrial sites, our systems offer real-time monitoring, sharp footage, and strong deterrence against threats. With expert setup and ongoing support, we ensure your premises stay secure using advanced security technology.",
+        "Our CCTV Installation Services deliver reliable and effective surveillance solutions to keep your property secure. We assess your site’s unique requirements and install high-definition cameras in strategic locations to maximize coverage and visibility.",
     },
   ];
 
